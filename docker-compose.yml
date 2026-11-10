@@ -1,0 +1,24 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "8780:8780"
+    volumes:
+      - ./data:/data
+    env_file:
+      - .env
+    environment:
+      SQLITE_PATH: /data/weather.db
+      CORS_ORIGINS: http://localhost:8781,http://127.0.0.1:8781
+    restart: unless-stopped
+
+  webui:
+    build:
+      context: ./webui
+      args:
+        VITE_API_URL: ""
+    ports:
+      - "8781:80"
+    depends_on:
+      - api
+    restart: unless-stopped

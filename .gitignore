@@ -1,0 +1,11 @@
+.env
+data/*.db
+data/*.db-*
+**/__pycache__/
+**/.venv/
+**/node_modules/
+webui/dist/
+graphify-out/
+*.pyc
+.DS_Store
+*.exe
