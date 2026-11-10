@@ -12,7 +12,6 @@ export type CitySummary = {
   id: number;
   slug: string;
   name_en: string;
-  name_fa: string;
   lat: number;
   lon: number;
   temp_c: number | null;
@@ -21,7 +20,6 @@ export type CitySummary = {
   humidity: number | null;
   wind_kmh: number | null;
   label_en: string;
-  label_fa: string;
   weather_updated_at: string | null;
 };
 
@@ -29,7 +27,6 @@ export type DayCell = {
   date: string;
   weather_code: number | null;
   label_en: string;
-  label_fa: string;
   temp_max_c: number | null;
   temp_min_c: number | null;
   precip_mm: number | null;
@@ -40,7 +37,6 @@ export type ForecastResponse = {
   rows: {
     slug: string;
     name_en: string;
-    name_fa: string;
     days: Record<string, DayCell>;
   }[];
 };
@@ -50,7 +46,6 @@ export type CityDetail = {
     id: number;
     slug: string;
     name_en: string;
-    name_fa: string;
     lat: number;
     lon: number;
   };
@@ -62,7 +57,6 @@ export type CityDetail = {
     wind_kmh: number | null;
     wind_dir: number | null;
     label_en: string;
-    label_fa: string;
     updated_at: string;
   } | null;
   daily: {
@@ -72,7 +66,6 @@ export type CityDetail = {
     temp_min_c: number | null;
     precip_mm: number | null;
     label_en: string;
-    label_fa: string;
   }[];
   extras: {
     aqi: number | null;

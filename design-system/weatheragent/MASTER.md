@@ -4,7 +4,7 @@
 
 - **Mode:** Operate (task tool, not marketing)
 - **Theme:** Cursor Dark (armin-webui-curations tokens) — overrides ui-ux-pro-max sky/glass defaults
-- **Typography:** Inter (EN chrome) + Vazirmatn (FA city names, `.fa` + `dir="rtl"`)
+- **Typography:** Inter only (English labels in every region; no FA/RTL dual copy)
 - **Map:** OSM tiles + CSS invert (dark, no API key), compact temp markers, Iran-bounded Leaflet view
 
 ## Tokens

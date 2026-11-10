@@ -56,8 +56,7 @@ def _day_cell(row: dict | None) -> dict | None:
     return {
         "date": row.get("date"),
         "weather_code": code,
-        "label_en": label(code, "en"),
-        "label_fa": label(code, "fa"),
+        "label_en": label(code),
         "temp_max_c": row.get("temp_max_c"),
         "temp_min_c": row.get("temp_min_c"),
         "precip_mm": row.get("precip_mm"),
@@ -95,8 +94,7 @@ def list_cities():
     for r in rows:
         d = dict(r)
         code = d.get("weather_code")
-        d["label_en"] = label(code, "en")
-        d["label_fa"] = label(code, "fa")
+        d["label_en"] = label(code)
         out.append(d)
     return {"cities": out}
 
@@ -112,7 +110,7 @@ def forecast_grid():
         cities = [
             dict(r)
             for r in conn.execute(
-                "SELECT id, slug, name_en, name_fa FROM cities WHERE important = 1 ORDER BY name_en"
+                "SELECT id, slug, name_en FROM cities WHERE important = 1 ORDER BY name_en"
             )
         ]
         forecasts = conn.execute(
@@ -151,7 +149,6 @@ def forecast_grid():
             {
                 "slug": city["slug"],
                 "name_en": city["name_en"],
-                "name_fa": city["name_fa"],
                 "days": cells,
             }
         )
@@ -187,19 +184,23 @@ async def city_detail(slug: str):
     extras = await enrich_city(city_d)
     code = current["weather_code"] if current else None
     return {
-        "city": city_d,
+        "city": {
+            "id": city_d["id"],
+            "slug": city_d["slug"],
+            "name_en": city_d["name_en"],
+            "lat": city_d["lat"],
+            "lon": city_d["lon"],
+        },
         "current": {
             **(dict(current) if current else {}),
-            "label_en": label(code, "en"),
-            "label_fa": label(code, "fa"),
+            "label_en": label(code),
         }
         if current
         else None,
         "daily": [
             {
                 **d,
-                "label_en": label(d.get("weather_code"), "en"),
-                "label_fa": label(d.get("weather_code"), "fa"),
+                "label_en": label(d.get("weather_code")),
             }
             for d in daily
         ],

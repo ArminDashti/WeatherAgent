@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS cities (
   id INTEGER PRIMARY KEY,
   slug TEXT NOT NULL UNIQUE,
   name_en TEXT NOT NULL,
-  name_fa TEXT NOT NULL,
   lat REAL NOT NULL,
   lon REAL NOT NULL,
   important INTEGER NOT NULL DEFAULT 1
@@ -83,9 +82,34 @@ def get_db():
         conn.close()
 
 
+def _drop_name_fa_if_present(conn: sqlite3.Connection) -> None:
+    cols = {row[1] for row in conn.execute("PRAGMA table_info(cities)").fetchall()}
+    if "name_fa" not in cols:
+        return
+    conn.execute("PRAGMA foreign_keys = OFF")
+    conn.executescript(
+        """
+        CREATE TABLE cities_en (
+          id INTEGER PRIMARY KEY,
+          slug TEXT NOT NULL UNIQUE,
+          name_en TEXT NOT NULL,
+          lat REAL NOT NULL,
+          lon REAL NOT NULL,
+          important INTEGER NOT NULL DEFAULT 1
+        );
+        INSERT INTO cities_en (id, slug, name_en, lat, lon, important)
+          SELECT id, slug, name_en, lat, lon, important FROM cities;
+        DROP TABLE cities;
+        ALTER TABLE cities_en RENAME TO cities;
+        """
+    )
+    conn.execute("PRAGMA foreign_keys = ON")
+
+
 def init_db() -> None:
     with get_db() as conn:
         conn.executescript(SCHEMA)
+        _drop_name_fa_if_present(conn)
 
 
 def row_to_dict(row: sqlite3.Row | None) -> dict | None:
