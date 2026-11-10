@@ -30,6 +30,23 @@
   --info: #81A1C1;
   --scrollbar-thumb: #F0F0F011;
   --scrollbar-thumb-hover: #F0F0F01E;
+  /* Weather / stat icon accents (Nord-ish on Cursor Dark) */
+  --wx-sun: #EBCB8B;
+  --wx-partly: #D08770;
+  --wx-cloud: #A0A8B8;
+  --wx-fog: #8B919E;
+  --wx-rain: #81A1C1;
+  --wx-snow: #88C0D0;
+  --wx-storm: #E34671;
+  --wx-humidity: #5E81AC;
+  --wx-wind: #8FBCBB;
+  --wx-aqi: #A3BE8C;
+  --wx-uv: #EBCB8B;
+  --wx-vis: #88C0D0;
+  --wx-pressure: #A0A8B8;
+  --wx-sunrise: #EBCB8B;
+  --wx-sunset: #D08770;
+  --wx-temp: #BF616A;
 }
 
 .light {
@@ -59,4 +76,20 @@
   --info: #0064B0;
   --scrollbar-thumb: #14141424;
   --scrollbar-thumb-hover: #14141433;
+  --wx-sun: #CD4500;
+  --wx-partly: #CD4500;
+  --wx-cloud: #626262;
+  --wx-fog: #8A8A8A;
+  --wx-rain: #2778C1;
+  --wx-snow: #0064B0;
+  --wx-storm: #BE1744;
+  --wx-humidity: #2778C1;
+  --wx-wind: #0064B0;
+  --wx-aqi: #007041;
+  --wx-uv: #CD4500;
+  --wx-vis: #0064B0;
+  --wx-pressure: #626262;
+  --wx-sunrise: #CD4500;
+  --wx-sunset: #BE1744;
+  --wx-temp: #BE1744;
 }

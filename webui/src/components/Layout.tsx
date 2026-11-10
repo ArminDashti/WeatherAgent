@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { CloudSun, PanelLeftClose, PanelLeftOpen, Settings, Table2 } from "lucide-react";
+import { CalendarDays, CloudSun, Github, Map, PanelLeftClose, PanelLeftOpen, Settings } from "lucide-react";
 import clsx from "clsx";
 
 const nav = [
-  { to: "/", label: "Map", icon: CloudSun, end: true },
-  { to: "/forecast", label: "Forecast", icon: Table2 },
+  { to: "/", label: "Map", icon: Map, end: true, color: "text-[var(--wx-rain)]" },
+  { to: "/forecast", label: "Forecast", icon: CalendarDays, color: "text-[var(--wx-partly)]" },
 ];
 
 export function Layout() {
@@ -29,9 +29,12 @@ export function Layout() {
             {collapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
           </button>
           {!collapsed && (
-            <div className="min-w-0">
-              <div className="truncate text-sm font-semibold tracking-tight">WeatherAgent</div>
-              <div className="truncate text-xs text-[var(--fg-muted)]">Iran weather</div>
+            <div className="flex min-w-0 items-center gap-2">
+              <CloudSun size={18} aria-hidden className="shrink-0 text-[var(--wx-partly)]" />
+              <div className="min-w-0">
+                <div className="truncate text-sm font-semibold tracking-tight">WeatherAgent</div>
+                <div className="truncate text-xs text-[var(--fg-muted)]">Iran weather</div>
+              </div>
             </div>
           )}
         </div>
@@ -51,7 +54,7 @@ export function Layout() {
                 )
               }
             >
-              <item.icon size={18} aria-hidden />
+              <item.icon size={18} aria-hidden className={item.color} />
               {!collapsed && <span>{item.label}</span>}
             </NavLink>
           ))}
@@ -94,8 +97,9 @@ export function Layout() {
             href="https://github.com/armindashti"
             target="_blank"
             rel="noreferrer"
-            className="text-[var(--link)] hover:underline"
+            className="inline-flex items-center gap-1.5 text-[var(--link)] hover:underline"
           >
+            <Github size={12} aria-hidden />
             GitHub
           </a>
           <span>Created by Armin Dashti</span>
