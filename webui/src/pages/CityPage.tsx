@@ -14,6 +14,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   ArrowLeft,
   ChartArea,
+  Clock,
   Droplets,
   Eye,
   Gauge,
@@ -62,6 +63,15 @@ export function CityPage() {
     [data],
   );
 
+  const hourlyChart = useMemo(
+    () =>
+      (data?.hourly ?? []).map((h) => ({
+        hour: h.time.slice(11, 16),
+        temp: h.temp_c,
+      })),
+    [data],
+  );
+
   if (!data) {
     return (
       <div className="flex items-center gap-2 p-6 text-[var(--fg-muted)]">
@@ -71,7 +81,7 @@ export function CityPage() {
     );
   }
 
-  const { city, current, daily, extras } = data;
+  const { city, current, hourly, daily, extras } = data;
   const providers = extras.providers ?? {};
   const { Icon: CurrentWeather, className: wxColor } = weatherGlyph(current?.weather_code);
 
@@ -126,6 +136,45 @@ export function CityPage() {
         <Stat icon={Gauge} iconClass="text-[var(--wx-pressure)]" label="Pressure" value={extras.pressure_hpa != null ? `${Math.round(extras.pressure_hpa)} hPa` : "—"} />
         <Stat icon={Sunrise} iconClass="text-[var(--wx-sunrise)]" label="Sunrise" value={extras.sunrise ? extras.sunrise.slice(11, 16) : "—"} />
         <Stat icon={Sunset} iconClass="text-[var(--wx-sunset)]" label="Sunset" value={extras.sunset ? extras.sunset.slice(11, 16) : "—"} />
+      </section>
+
+      <section className="mb-6 rounded-lg border border-[var(--border)] bg-[var(--bg-chrome)] p-4">
+        <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold">
+          <Clock size={16} aria-hidden className="text-[var(--wx-partly)]" />
+          Next 24 hours
+        </h2>
+        <div className="h-40">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={hourlyChart}>
+              <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" />
+              <XAxis dataKey="hour" stroke="var(--fg-muted)" fontSize={11} interval={2} />
+              <YAxis stroke="var(--fg-muted)" fontSize={12} unit="°" width={36} />
+              <Tooltip
+                contentStyle={{
+                  background: "var(--bg-elevated)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 8,
+                }}
+              />
+              <Area type="monotone" dataKey="temp" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.2} name="Temp" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="scrollbar-thin mt-3 flex gap-2 overflow-x-auto pb-1">
+          {hourly.map((h) => {
+            const { Icon: HourWeather, className: hourColor } = weatherGlyph(h.weather_code);
+            return (
+              <div
+                key={h.time}
+                className="flex w-16 shrink-0 flex-col items-center gap-1 rounded-md border border-[var(--border)] px-1.5 py-2 text-center text-xs"
+              >
+                <span className="text-[var(--fg-muted)]">{h.time.slice(11, 16)}</span>
+                <HourWeather size={16} aria-hidden className={hourColor} />
+                <span className="tabular-nums font-semibold">{temp(h.temp_c)}</span>
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       <section className="mb-6 rounded-lg border border-[var(--border)] bg-[var(--bg-chrome)] p-4">

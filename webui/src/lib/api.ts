@@ -59,6 +59,14 @@ export type CityDetail = {
     label_en: string;
     updated_at: string;
   } | null;
+  hourly: {
+    time: string;
+    temp_c: number | null;
+    weather_code: number | null;
+    precip_mm: number | null;
+    wind_kmh: number | null;
+    label_en: string;
+  }[];
   daily: {
     date: string;
     weather_code: number | null;

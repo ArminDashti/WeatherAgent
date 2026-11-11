@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { CalendarDays, CloudSun, Github, Map, PanelLeftClose, PanelLeftOpen, Settings } from "lucide-react";
+import { CalendarDays, CloudSun, Map, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import clsx from "clsx";
 
 const nav = [
@@ -59,52 +59,11 @@ export function Layout() {
             </NavLink>
           ))}
         </nav>
-
-        <div className="border-t border-[var(--border)] p-2">
-          <div
-            className={clsx(
-              "flex items-center gap-2 rounded-lg px-2 py-2",
-              collapsed && "justify-center",
-            )}
-          >
-            <div
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--bg-selected)] text-xs font-semibold"
-              aria-hidden
-            >
-              AD
-            </div>
-            {!collapsed && (
-              <>
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm">Armin Dashti</div>
-                  <div className="truncate text-xs text-[var(--fg-muted)]">Local</div>
-                </div>
-                <span className="text-[var(--fg-muted)]" aria-hidden>
-                  <Settings size={16} />
-                </span>
-              </>
-            )}
-          </div>
-        </div>
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <main className="min-h-0 flex-1 overflow-auto">
-          <Outlet />
-        </main>
-        <footer className="flex h-10 shrink-0 items-center justify-between border-t border-[var(--border)] bg-[var(--bg-chrome)] px-4 text-xs text-[var(--fg-muted)]">
-          <a
-            href="https://github.com/armindashti"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 text-[var(--link)] hover:underline"
-          >
-            <Github size={12} aria-hidden />
-            GitHub
-          </a>
-          <span>Created by Armin Dashti</span>
-        </footer>
-      </div>
+      <main className="min-h-0 min-w-0 flex-1 overflow-auto">
+        <Outlet />
+      </main>
     </div>
   );
 }

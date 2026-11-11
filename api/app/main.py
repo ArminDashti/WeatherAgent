@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.db import get_db, init_db, loads
 from app.seed import seed_cities
+from app.providers import open_meteo
 from app.sync import enrich_city, sync_all_cities
 from app.weather_codes import label
 
@@ -182,6 +183,11 @@ async def city_detail(slug: str):
         ]
 
     extras = await enrich_city(city_d)
+    try:
+        hourly_raw = await open_meteo.fetch_hourly(city_d["lat"], city_d["lon"], 24)
+    except Exception as exc:  # noqa: BLE001 — city page still useful without hourly
+        print(f"hourly fetch failed for {slug}: {exc}")
+        hourly_raw = []
     code = current["weather_code"] if current else None
     return {
         "city": {
@@ -197,6 +203,13 @@ async def city_detail(slug: str):
         }
         if current
         else None,
+        "hourly": [
+            {
+                **h,
+                "label_en": label(h.get("weather_code")),
+            }
+            for h in hourly_raw
+        ],
         "daily": [
             {
                 **d,

@@ -55,6 +55,44 @@ async def fetch_forecast_batch(cities: list[dict]) -> dict:
     return {"results": results}
 
 
+async def fetch_hourly(lat: float, lon: float, hours: int = 24) -> list[dict]:
+    """Next `hours` of hourly temp / weather / precip / wind for one point."""
+    params = {
+        "latitude": lat,
+        "longitude": lon,
+        "hourly": "temperature_2m,weather_code,precipitation,wind_speed_10m",
+        "timezone": "Asia/Tehran",
+        "forecast_hours": hours,
+        "wind_speed_unit": "kmh",
+    }
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        r = await client.get(FORECAST_URL, params=params)
+        r.raise_for_status()
+        data = r.json()
+    hourly = data.get("hourly") or {}
+    times = hourly.get("time") or []
+    out: list[dict] = []
+    for i, t in enumerate(times[:hours]):
+        out.append(
+            {
+                "time": t,
+                "temp_c": (hourly.get("temperature_2m") or [None])[i]
+                if i < len(hourly.get("temperature_2m") or [])
+                else None,
+                "weather_code": (hourly.get("weather_code") or [None])[i]
+                if i < len(hourly.get("weather_code") or [])
+                else None,
+                "precip_mm": (hourly.get("precipitation") or [None])[i]
+                if i < len(hourly.get("precipitation") or [])
+                else None,
+                "wind_kmh": (hourly.get("wind_speed_10m") or [None])[i]
+                if i < len(hourly.get("wind_speed_10m") or [])
+                else None,
+            }
+        )
+    return out
+
+
 async def fetch_air_quality(lat: float, lon: float) -> dict | None:
     params = {
         "latitude": lat,
