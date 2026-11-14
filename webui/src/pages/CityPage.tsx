@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "motion/react";
 import {
@@ -40,15 +40,17 @@ type LoadState =
 export function CityPage() {
   const { slug } = useParams();
   const [state, setState] = useState<LoadState>({ status: "loading" });
+  const requestId = useRef(0);
 
-  const load = useCallback(async (citySlug: string, signal?: { alive: boolean }) => {
+  const load = useCallback(async (citySlug: string) => {
+    const id = ++requestId.current;
     setState({ status: "loading" });
     try {
       const res = await api.city(citySlug);
-      if (signal && !signal.alive) return;
+      if (id !== requestId.current) return;
       setState({ status: "ready", data: res });
     } catch (e) {
-      if (signal && !signal.alive) return;
+      if (id !== requestId.current) return;
       const message = e instanceof Error ? e.message : "Failed to load city";
       toast.error("Failed to load city");
       console.error(e);
@@ -58,10 +60,9 @@ export function CityPage() {
 
   useEffect(() => {
     if (!slug) return;
-    const signal = { alive: true };
-    void load(slug, signal);
+    void load(slug);
     return () => {
-      signal.alive = false;
+      requestId.current += 1;
     };
   }, [slug, load]);
 
