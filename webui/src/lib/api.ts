@@ -37,6 +37,7 @@ export type ForecastResponse = {
   rows: {
     slug: string;
     name_en: string;
+    name_fa?: string | null;
     days: Record<string, DayCell>;
   }[];
 };
@@ -46,6 +47,7 @@ export type CityDetail = {
     id: number;
     slug: string;
     name_en: string;
+    name_fa?: string | null;
     lat: number;
     lon: number;
   };
@@ -57,6 +59,7 @@ export type CityDetail = {
     wind_kmh: number | null;
     wind_dir: number | null;
     label_en: string;
+    label_fa?: string | null;
     updated_at: string;
   } | null;
   hourly: {
@@ -66,6 +69,7 @@ export type CityDetail = {
     precip_mm: number | null;
     wind_kmh: number | null;
     label_en: string;
+    label_fa?: string | null;
   }[];
   daily: {
     date: string;
@@ -74,6 +78,7 @@ export type CityDetail = {
     temp_min_c: number | null;
     precip_mm: number | null;
     label_en: string;
+    label_fa?: string | null;
   }[];
   extras: {
     aqi: number | null;
