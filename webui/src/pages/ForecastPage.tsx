@@ -75,9 +75,11 @@ export function ForecastPage() {
                       <MapPin size={12} aria-hidden className="text-[var(--wx-rain)]" />
                       {row.name_en}
                     </Link>
-                    <div className="fa text-xs text-[var(--fg-muted)]" dir="rtl">
-                      {row.name_fa}
-                    </div>
+                    {row.name_fa ? (
+                      <div className="fa text-xs text-[var(--fg-muted)]" dir="rtl">
+                        {row.name_fa}
+                      </div>
+                    ) : null}
                   </td>
                   {data.columns.map((col) => {
                     const cell = row.days[col.key];
