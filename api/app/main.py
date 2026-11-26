@@ -159,6 +159,7 @@ def forecast_grid():
 
 @app.get("/api/cities/{slug}")
 async def city_detail(slug: str):
+    today = datetime.now(TEHRAN).date().isoformat()
     with get_db() as conn:
         city = conn.execute(
             "SELECT * FROM cities WHERE slug = ?", (slug,)
@@ -174,11 +175,11 @@ async def city_detail(slug: str):
             for r in conn.execute(
                 """
                 SELECT * FROM daily_forecast
-                WHERE city_id = ?
+                WHERE city_id = ? AND date >= ?
                 ORDER BY date
                 LIMIT 7
                 """,
-                (city_d["id"],),
+                (city_d["id"], today),
             )
         ]
 
