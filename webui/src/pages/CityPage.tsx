@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { motion } from "motion/react";
 import {
   Area,
@@ -12,7 +12,6 @@ import {
 } from "recharts";
 import type { LucideIcon } from "lucide-react";
 import {
-  ArrowLeft,
   ChartArea,
   Clock,
   Droplets,
@@ -87,7 +86,7 @@ export function CityPage() {
 
   if (state.status === "loading") {
     return (
-      <div className="mx-auto max-w-4xl space-y-4 p-4 sm:p-6" aria-busy="true" aria-live="polite">
+      <div className="w-full space-y-4 p-4 sm:p-6" aria-busy="true" aria-live="polite">
         <div className="h-4 w-28 animate-pulse rounded bg-[var(--bg-chrome)]" />
         <div className="h-28 animate-pulse rounded-lg border border-[var(--border)] bg-[var(--bg-chrome)]" />
         <div className="h-16 animate-pulse rounded-lg border border-[var(--border)] bg-[var(--bg-chrome)]" />
@@ -101,14 +100,7 @@ export function CityPage() {
 
   if (state.status === "error") {
     return (
-      <div className="mx-auto max-w-4xl p-4 sm:p-6">
-        <Link
-          to="/"
-          className="mb-4 inline-flex h-11 items-center gap-2 rounded-lg px-2 text-sm text-[var(--fg-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--fg)]"
-        >
-          <ArrowLeft size={16} aria-hidden className="text-[var(--wx-rain)]" />
-          Back to map
-        </Link>
+      <div className="w-full p-4 sm:p-6">
         <div
           role="alert"
           className="rounded-lg border border-[var(--border)] bg-[var(--bg-chrome)] p-5"
@@ -184,19 +176,11 @@ export function CityPage() {
 
   return (
     <motion.div
-      className="mx-auto max-w-4xl p-4 sm:p-6"
+      className="w-full p-4 sm:p-6"
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", bounce: 0, duration: 0.4 }}
     >
-      <Link
-        to="/"
-        className="mb-3 inline-flex h-11 items-center gap-2 rounded-lg px-2 text-sm text-[var(--fg-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--fg)]"
-      >
-        <ArrowLeft size={16} aria-hidden className="text-[var(--wx-rain)]" />
-        Back to map
-      </Link>
-
       <header className="mb-3 rounded-lg border border-[var(--border)] bg-[var(--bg-chrome)] p-4 sm:p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="min-w-0">

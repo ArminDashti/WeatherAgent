@@ -26,7 +26,7 @@ export function ForecastPage() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-6xl p-4 sm:p-6">
+    <div className="w-full p-4 sm:p-6">
       <header className="mb-6">
         <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
           <CalendarDays size={22} aria-hidden className="text-[var(--wx-rain)]" />
