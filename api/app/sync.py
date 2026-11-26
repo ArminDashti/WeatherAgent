@@ -79,6 +79,11 @@ async def sync_all_cities() -> dict:
                     ),
                 )
 
+            conn.execute(
+                "DELETE FROM daily_forecast WHERE city_id = ? AND date < ?",
+                (city["id"], datetime.now(TEHRAN).date().isoformat()),
+            )
+
             sunrises = daily.get("sunrise") or []
             sunsets = daily.get("sunset") or []
             uvs = daily.get("uv_index_max") or []
